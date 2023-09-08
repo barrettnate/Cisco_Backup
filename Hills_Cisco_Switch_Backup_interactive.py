@@ -3,45 +3,48 @@
 # Hill's Pet Nutrition
 # 08/11/2023
  
-# import modules needed and set up ssh connection parameters
+#Import modules needed and set up ssh connection parameters
 import paramiko
 import datetime
 import getpass
 import os
 import time
 
-port = 22
-ssh = paramiko.SSHClient()
-ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-# define variables
+
+#Define variables
 time_now  = datetime.datetime.now().strftime('%m_%d_%Y_%H_%M_%S')
 switchLocation = input('Which site are these switches located? (ex. USEP)')
 switchLocation = switchLocation.upper()
 searchTerm = 'hostname'
+port = 22
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-#These two file paths need to be changed to match the appropriate locations
-infilepath = "O:\\My Drive\\Powershell\\Scripts\\Switches\\{}".format(switchLocation) + "_Switches.txt"
-outfilepath = "O:\\My Drive\\Powershell\\Scripts\\Switches\\Backup\\{}\\".format(switchLocation)
-
-#Text formatting defenitions
+#Text formatting definitions
 def prGreen(skk): print("\033[92m {}\033[00m" .format(skk))
 def prLightPurple(skk): print("\033[94m {}\033[00m" .format(skk))
 def prRed(skk): print("\033[91m {}\033[00m" .format(skk))
+
+#These two file paths need to be changed to match the appropriate locations
+#Infilepath needs to point to the text file that contains the IP addresses of the switches. 1 per line.
+infilepath = "O:\\My Drive\\Powershell\\Scripts\\Switches\\{}".format(switchLocation) + "_Switches.txt"
+outfilepath = "O:\\My Drive\\Powershell\\Scripts\\Switches\\Backup\\{}\\".format(switchLocation)
+
+
 
 def createDirectory():
     #Create Directory if it doesn't exist
     isExist = os.path.exists(outfilepath)
     if not isExist:
 
-        # Create a new directory because it does not exist
+        # Create a new directory
         os.makedirs(outfilepath)
         print("The directory wasn't found. Creating now.")
 
 #Functions for components of the script
 def switchConnect():
     
-
     userName = input('Username: ')
     userPass = getpass.getpass()
   
